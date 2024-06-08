@@ -9,6 +9,24 @@ import {
 import { ResponsiveBar } from "@nivo/bar";
 import { useEffect, useState } from "react";
 
+const LoadingSpinner = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className="animate-spin"
+    // className={cn("animate-spin", className)}
+  >
+    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+  </svg>
+);
+
 export default function Skills() {
   const PAGE_SIZE = 25;
   const BAR_HEIGHT = 20;
@@ -65,7 +83,13 @@ export default function Skills() {
 
   return (
     <div className="flex flex-col items-center">
-      <Pagination className="lowercase">
+      <Pagination
+        aria-disabled={skills.length === 0}
+        tabIndex={skills.length === 0 ? -1 : undefined}
+        className={
+          skills.length === 0 ? "pointer-events-none opacity-50" : undefined
+        }
+      >
         <PaginationContent>
           {currentPage > 2 ? (
             <>
@@ -114,42 +138,49 @@ export default function Skills() {
         shown below are the counts of skills listed in LinkedIn{" "}
         <i>software engineer</i> job postings
       </Label>
-      <div style={{ height, width: "100%" }}>
-        <ResponsiveBar
-          theme={theme}
-          data={skills
-            .slice(currentPage * PAGE_SIZE - PAGE_SIZE, currentPage * PAGE_SIZE)
-            .reverse()}
-          keys={["count"]}
-          indexBy="skill"
-          colorBy="indexValue"
-          margin={{
-            top: 15,
-            right: 10,
-            bottom: 10,
-            left: window.screen.width < 500 ? 150 : 200,
-          }}
-          padding={0.3}
-          valueScale={{ type: "linear" }}
-          indexScale={{ type: "band", round: true }}
-          colors={{ scheme: "pastel1" }}
-          borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
-          axisTop={null}
-          axisRight={null}
-          axisLeft={{
-            tickSize: 5,
-            tickPadding: 5,
-            tickRotation: window.screen.width < 500 ? -30 : 0,
-          }}
-          axisBottom={null}
-          labelSkipWidth={12}
-          labelSkipHeight={12}
-          labelTextColor={{ from: "color", modifiers: [["darker", 10]] }}
-          layout={"horizontal"}
-          animate={true}
-          isInteractive={false}
-        />
-      </div>
+      {skills.length === 0 ? (
+        <LoadingSpinner />
+      ) : (
+        <div style={{ height, width: "100%" }}>
+          <ResponsiveBar
+            theme={theme}
+            data={skills
+              .slice(
+                currentPage * PAGE_SIZE - PAGE_SIZE,
+                currentPage * PAGE_SIZE
+              )
+              .reverse()}
+            keys={["count"]}
+            indexBy="skill"
+            colorBy="indexValue"
+            margin={{
+              top: 15,
+              right: 10,
+              bottom: 10,
+              left: window.screen.width < 500 ? 150 : 200,
+            }}
+            padding={0.3}
+            valueScale={{ type: "linear" }}
+            indexScale={{ type: "band", round: true }}
+            colors={{ scheme: "pastel1" }}
+            borderColor={{ from: "color", modifiers: [["darker", 1.6]] }}
+            axisTop={null}
+            axisRight={null}
+            axisLeft={{
+              tickSize: 5,
+              tickPadding: 5,
+              tickRotation: window.screen.width < 500 ? -30 : 0,
+            }}
+            axisBottom={null}
+            labelSkipWidth={12}
+            labelSkipHeight={12}
+            labelTextColor={{ from: "color", modifiers: [["darker", 10]] }}
+            layout={"horizontal"}
+            animate={true}
+            isInteractive={false}
+          />
+        </div>
+      )}
     </div>
   );
 }
