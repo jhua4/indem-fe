@@ -19,7 +19,7 @@ export default function About() {
 
   return (
     <div className="flex flex-col">
-      <Label className="self-start text-lg py-2">how it works</Label>
+      <Label className="self-start text-lg py-2"># how it works</Label>
       <p>
         This is a web scraper that queries LinkedIn <i>software engineer</i> job
         postings and parses the skills listed by the poster. The counts of these
@@ -30,7 +30,7 @@ export default function About() {
         crawler on my local machine as it requires LinkedIn premium. Past
         crawler run details are shown in the <b>crawler history</b> tab.
       </p>
-      <Label className="self-start text-lg pt-12">todo</Label>
+      <Label className="self-start text-lg pt-12"># todo</Label>
       <ul>
         <li>
           1. This data would probably be more useful if done on more specific
@@ -39,7 +39,7 @@ export default function About() {
         </li>
         <li>2. Add charts for salary data</li>
       </ul>
-      <Label className="self-start text-lg pt-12">crawler source code</Label>
+      <Label className="self-start text-lg pt-12"># crawler source code</Label>
       {/* <Button variant="link" className="self-start px-0 pb-4"> */}
       <a
         href="https://github.com/jhua4/indem-crawlers/blob/main/linkedin.py"
