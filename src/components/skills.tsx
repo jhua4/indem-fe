@@ -110,6 +110,10 @@ export default function Skills() {
         {currentPage === maxPage ? skills.length : currentPage * PAGE_SIZE} of{" "}
         {skills.length}
       </Label>
+      <Label className="m-4">
+        shown below are the counts of skills listed in LinkedIn{" "}
+        <i>software engineer</i> job postings
+      </Label>
       <div style={{ height, width: "100%" }}>
         <ResponsiveBar
           theme={theme}
