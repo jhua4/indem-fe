@@ -48,7 +48,7 @@ export default function Skills() {
 
   const loadSkills = useDebounce(async () => {
     await fetch(
-      `${import.meta.env.VITE_API_URL}/skills?titles=${getTitlesFromOptions().join("&")}`
+      `${import.meta.env.VITE_API_URL}/skills?titles=${getTitlesFromOptions().join(",")}`
     )
       .then((resp) => resp.json())
       .then((data) => {
@@ -60,7 +60,7 @@ export default function Skills() {
 
   useEffect(() => {
     if (titles.length > 0) loadSkills();
-  });
+  }, [titles]);
 
   const theme = {
     text: {
@@ -152,7 +152,7 @@ export default function Skills() {
       <Label className="m-4">
         shown below are the counts of skills listed in LinkedIn job postings
       </Label>
-      <div className="w-80">
+      <div className="w-96">
         <MultipleSelector
           defaultOptions={OPTIONS}
           options={OPTIONS}
