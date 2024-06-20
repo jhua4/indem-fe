@@ -21,10 +21,9 @@ export default function About() {
     <div className="flex flex-col">
       <Label className="self-start text-lg py-2"># how it works</Label>
       <p>
-        This is a web scraper that queries LinkedIn <i>software engineer</i> job
-        postings and parses the skills listed by the poster. The counts of these
-        skills are shown on the <b>skills</b> tab. The source code for the
-        crawler is shown below.
+        This is a web scraper that queries LinkedIn job postings and parses the
+        skills listed by the poster. The counts of these skills are shown on the{" "}
+        <b>skills</b> tab. The source code for the crawler is shown below.
         <br />
         Note that this is just a side project, currently I'm only running this
         crawler on my local machine as it requires LinkedIn premium. Past
@@ -32,12 +31,7 @@ export default function About() {
       </p>
       <Label className="self-start text-lg pt-12"># todo</Label>
       <ul>
-        <li>
-          1. This data would probably be more useful if done on more specific
-          queries, such as <i>frontend engineer</i>, <i>backend engineer</i>,
-          etc.
-        </li>
-        <li>2. Add charts for salary data</li>
+        <li>1. Add charts for salary data</li>
       </ul>
       <Label className="self-start text-lg pt-12"># crawler source code</Label>
       {/* <Button variant="link" className="self-start px-0 pb-4"> */}

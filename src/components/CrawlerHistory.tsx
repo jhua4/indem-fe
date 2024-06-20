@@ -2,8 +2,8 @@ import { Label } from "@/components/ui/label";
 import { useEffect, useState } from "react";
 
 interface CrawlerHistoryItem {
+  title: string;
   jobs_inserted: number;
-  jobs_not_inserted: number;
   skills_crawled: number;
   job_start_time: string;
   job_end_time: string;
@@ -12,8 +12,8 @@ interface CrawlerHistoryItem {
 export default function CrawlerHistory() {
   const [history, setHistory] = useState<CrawlerHistoryItem[]>([]);
   const columnHeaders = [
+    "job title",
     "jobs inserted",
-    "jobs not inserted",
     "skills crawled",
     "start time",
     "end time",
@@ -32,7 +32,7 @@ export default function CrawlerHistory() {
   }, []);
 
   return (
-    <div className="flex flex-col max-w-3xl">
+    <div className="flex flex-col max-w-5xl">
       <p className="mb-16">
         Here are details of past runs of the web scraper. For more info, see the{" "}
         <b>about</b> tab.
@@ -45,9 +45,9 @@ export default function CrawlerHistory() {
         ))}
       </div>
       {history.map((item, id) => (
-        <div key={id} className="grid grid-cols-5 grid-gap-4">
+        <div key={id} className="grid grid-cols-5 grid-gap-8 text-sm">
+          <div>{item.title}</div>
           <div>{item.jobs_inserted}</div>
-          <div>{item.jobs_not_inserted}</div>
           <div>{item.skills_crawled}</div>
           <div>{item.job_start_time}</div>
           <div>{item.job_end_time}</div>
