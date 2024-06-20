@@ -1,4 +1,5 @@
 import { Label } from "@/components/ui/label";
+import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import {
   Pagination,
   PaginationContent,
@@ -8,6 +9,7 @@ import {
 } from "@/components/ui/pagination";
 import { ResponsiveBar } from "@nivo/bar";
 import { useEffect, useState } from "react";
+import { useDebounce } from "../util/useDebounce";
 
 const LoadingSpinner = () => (
   <svg
@@ -21,7 +23,6 @@ const LoadingSpinner = () => (
     strokeLinecap="round"
     strokeLinejoin="round"
     className="animate-spin"
-    // className={cn("animate-spin", className)}
   >
     <path d="M21 12a9 9 0 1 1-6.219-8.56" />
   </svg>
@@ -37,19 +38,29 @@ export default function Skills() {
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(2);
 
-  useEffect(() => {
-    const loadSkills = async () => {
-      await fetch(`${import.meta.env.VITE_API_URL}/skills`)
-        .then((resp) => resp.json())
-        .then((data) => {
-          setMaxPage(Math.ceil(data.length / PAGE_SIZE));
-          showPage(1);
-          setSkills(data);
-        });
-    };
+  const OPTIONS: Option[] = [
+    { label: "frontend engineer", value: "frontend engineer" },
+    { label: "backend engineer", value: "backend engineer" },
+    { label: "full stack engineer", value: "full stack engineer" },
+    { label: "machine learning engineer", value: "machine learning engineer" },
+  ];
+  const [titles, setTitles] = useState(OPTIONS);
 
-    loadSkills();
-  }, []);
+  const loadSkills = useDebounce(async () => {
+    await fetch(
+      `${import.meta.env.VITE_API_URL}/skills?titles=${getTitlesFromOptions().join("&")}`
+    )
+      .then((resp) => resp.json())
+      .then((data) => {
+        setMaxPage(Math.ceil(data.length / PAGE_SIZE));
+        showPage(1);
+        setSkills(data);
+      });
+  });
+
+  useEffect(() => {
+    if (titles.length > 0) loadSkills();
+  });
 
   const theme = {
     text: {
@@ -79,6 +90,10 @@ export default function Skills() {
         }px`
       );
     }
+  };
+
+  const getTitlesFromOptions = () => {
+    return titles.map((o) => o.value);
   };
 
   return (
@@ -135,9 +150,23 @@ export default function Skills() {
         {skills.length}
       </Label>
       <Label className="m-4">
-        shown below are the counts of skills listed in LinkedIn{" "}
-        <i>software engineer</i> job postings
+        shown below are the counts of skills listed in LinkedIn job postings
       </Label>
+      <div className="w-80">
+        <MultipleSelector
+          defaultOptions={OPTIONS}
+          options={OPTIONS}
+          value={titles}
+          placeholder="select job title(s)"
+          emptyIndicator={
+            <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
+              no results found.
+            </p>
+          }
+          hidePlaceholderWhenSelected={true}
+          onChange={(options: Option[]) => setTitles(options)}
+        />
+      </div>
       {skills.length === 0 ? (
         <LoadingSpinner />
       ) : (
