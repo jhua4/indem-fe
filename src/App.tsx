@@ -1,6 +1,7 @@
 import About from "@/components/About";
 import CrawlerHistory from "@/components/CrawlerHistory";
 import Skills from "@/components/Skills";
+import Salaries from "@/components/Salaries";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "./components/ui/label";
 
@@ -11,11 +12,15 @@ function App() {
       <Tabs defaultValue="skills" className="w-full h-full">
         <TabsList>
           <TabsTrigger value="skills">skills</TabsTrigger>
+          <TabsTrigger value="salaries">salaries</TabsTrigger>
           <TabsTrigger value="about">about</TabsTrigger>
           <TabsTrigger value="crawler-history">crawler history</TabsTrigger>
         </TabsList>
         <TabsContent value="skills" className="w-full h-full mt-8">
           <Skills />
+        </TabsContent>
+        <TabsContent value="salaries" className="w-full h-full mt-8">
+          <Salaries />
         </TabsContent>
         <TabsContent value="about" className="w-full h-full mt-8">
           <About />

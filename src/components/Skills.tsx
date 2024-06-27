@@ -1,5 +1,4 @@
 import { Label } from "@/components/ui/label";
-import MultipleSelector, { Option } from "@/components/ui/multiple-selector";
 import {
   Pagination,
   PaginationContent,
@@ -10,6 +9,22 @@ import {
 import { ResponsiveBar } from "@nivo/bar";
 import { useEffect, useState } from "react";
 import { useDebounce } from "../util/useDebounce";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { Button } from "./ui/button";
+import { cn } from "@/lib/utils";
 
 const LoadingSpinner = () => (
   <svg
@@ -28,6 +43,25 @@ const LoadingSpinner = () => (
   </svg>
 );
 
+const titleOptions = [
+  {
+    value: "frontend engineer",
+    label: "frontend engineer",
+  },
+  {
+    value: "backend engineer",
+    label: "backend engineer",
+  },
+  {
+    value: "full stack engineer",
+    label: "full stack engineer",
+  },
+  {
+    value: "machine learning engineer",
+    label: "machine learning engineer",
+  },
+];
+
 export default function Skills() {
   const PAGE_SIZE = 25;
   const BAR_HEIGHT = 20;
@@ -37,30 +71,25 @@ export default function Skills() {
   const [pages, setPages] = useState([1, 2, 3]);
   const [currentPage, setCurrentPage] = useState(1);
   const [maxPage, setMaxPage] = useState(2);
-
-  const OPTIONS: Option[] = [
-    { label: "frontend engineer", value: "frontend engineer" },
-    { label: "backend engineer", value: "backend engineer" },
-    { label: "full stack engineer", value: "full stack engineer" },
-    { label: "machine learning engineer", value: "machine learning engineer" },
-  ];
-  const [titles, setTitles] = useState(OPTIONS);
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const loadSkills = useDebounce(async () => {
-    await fetch(
-      `${import.meta.env.VITE_API_URL}/skills?titles=${getTitlesFromOptions().join(",")}`
-    )
+    setLoading(true);
+    await fetch(`${import.meta.env.VITE_API_URL}/skills?title=${title}`)
       .then((resp) => resp.json())
       .then((data) => {
         setMaxPage(Math.ceil(data.length / PAGE_SIZE));
         showPage(1);
+        setLoading(false);
         setSkills(data);
       });
   });
 
   useEffect(() => {
-    if (titles.length > 0) loadSkills();
-  }, [titles]);
+    if (title) loadSkills();
+  }, [title]);
 
   const theme = {
     text: {
@@ -90,10 +119,6 @@ export default function Skills() {
         }px`
       );
     }
-  };
-
-  const getTitlesFromOptions = () => {
-    return titles.map((o) => o.value);
   };
 
   return (
@@ -152,22 +177,56 @@ export default function Skills() {
       <Label className="m-4">
         shown below are the counts of skills listed in LinkedIn job postings
       </Label>
-      <div className="w-96">
-        <MultipleSelector
-          defaultOptions={OPTIONS}
-          options={OPTIONS}
-          value={titles}
-          placeholder="select job title(s)"
-          emptyIndicator={
-            <p className="text-center text-sm leading-10 text-gray-600 dark:text-gray-400">
-              no results found.
-            </p>
-          }
-          hidePlaceholderWhenSelected={true}
-          onChange={(options: Option[]) => setTitles(options)}
-        />
+      <div className="mb-4">
+        <Popover open={open} onOpenChange={setOpen}>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              role="combobox"
+              aria-expanded={open}
+              className="w-[250px] justify-between"
+            >
+              {title
+                ? titleOptions.find(
+                    (titleOption) => titleOption.value === title
+                  )?.label
+                : "Select job title..."}
+              <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-[250px] p-0">
+            <Command>
+              <CommandInput placeholder="Search job titles..." />
+              <CommandList>
+                <CommandEmpty>No job title found.</CommandEmpty>
+                <CommandGroup>
+                  {titleOptions.map((titleOption) => (
+                    <CommandItem
+                      key={titleOption.value}
+                      value={titleOption.value}
+                      onSelect={(currentValue) => {
+                        setTitle(currentValue === title ? "" : currentValue);
+                        setOpen(false);
+                      }}
+                    >
+                      <Check
+                        className={cn(
+                          "mr-2 h-4 w-4",
+                          title === titleOption.value
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                      {titleOption.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </CommandList>
+            </Command>
+          </PopoverContent>
+        </Popover>
       </div>
-      {skills.length === 0 ? (
+      {loading ? (
         <LoadingSpinner />
       ) : (
         <div style={{ height, width: "100%" }}>

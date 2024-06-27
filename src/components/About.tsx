@@ -29,12 +29,11 @@ export default function About() {
         crawler on my local machine as it requires LinkedIn premium. Past
         crawler run details are shown in the <b>crawler history</b> tab.
       </p>
-      <Label className="self-start text-lg pt-12"># todo</Label>
+      {/* <Label className="self-start text-lg pt-12"># todo</Label>
       <ul>
-        <li>1. Add charts for salary data</li>
-      </ul>
+        <li>[x] Add charts for salary data</li>
+      </ul> */}
       <Label className="self-start text-lg pt-12"># crawler source code</Label>
-      {/* <Button variant="link" className="self-start px-0 pb-4"> */}
       <a
         href="https://github.com/jhua4/indem-crawlers/blob/main/linkedin.py"
         target="_blank"
@@ -42,7 +41,6 @@ export default function About() {
       >
         [link] https://github.com/jhua4/indem-crawlers/blob/main/linkedin.py
       </a>
-      {/* </Button> */}
       <pre id="code" className="text-xs p-8 mb-8 bg-black rounded-lg"></pre>
     </div>
   );
