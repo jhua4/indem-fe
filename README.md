@@ -3,6 +3,10 @@
 - vercel dev
 - vercel --prod
 
+# Todo
+
+[] Remove multiple-selector if unused
+
 # React + Vite + TypeScript Template (react-vite-ui)
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/Dan5py/react-vite-ui/blob/main/LICENSE)
