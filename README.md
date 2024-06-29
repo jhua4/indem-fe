@@ -6,7 +6,8 @@
 # Todo
 
 [ ] Remove multiple-selector if unused
-[ ] Tech debt - use better data fetching patterns
+[ ] Use better data fetching patterns
+[ ] Separate out fetching and component code
 
 # React + Vite + TypeScript Template (react-vite-ui)
 
