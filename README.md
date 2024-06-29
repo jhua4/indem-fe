@@ -5,7 +5,8 @@
 
 # Todo
 
-[] Remove multiple-selector if unused
+[ ] Remove multiple-selector if unused
+[ ] Tech debt - use better data fetching patterns
 
 # React + Vite + TypeScript Template (react-vite-ui)
 
